@@ -104,6 +104,49 @@ def cmd_selftest(args: argparse.Namespace) -> None:
     sys.exit(0 if ok else 1)
 
 
+def cmd_chop(args: argparse.Namespace) -> None:
+    from .vocalchop import NOTE_NAMES, write_chop_kit
+
+    audio_in = Path(args.audio).expanduser().resolve()
+    if not audio_in.exists():
+        print(f"error: vocal file not found: {audio_in}", file=sys.stderr)
+        sys.exit(2)
+    root_pitch = _parse_root(args.root)
+    out = Path(args.out).expanduser().resolve()
+    summary = write_chop_kit(
+        audio_in, out, root_pitch=root_pitch, scale=args.scale,
+        tempo_bpm=args.tempo, bars=args.bars, progression=args.progression,
+    )
+    root_name = NOTE_NAMES[root_pitch % 12]
+    if summary["n_slices"] > 64:
+        print(
+            f"note: {summary['n_slices']} slices is a lot — chop a 1-2 bar vocal phrase for a "
+            f"tighter, more playable kit (Todd mode addresses the first ~24 slices).",
+            file=sys.stderr,
+        )
+    print(
+        f"Chopped {summary['n_slices']} slices at {args.tempo} BPM, {root_name} {args.scale}.\n"
+        f"  MK pattern:   {summary['mk_notes']} notes (mk.notes.json, Simpler Classic, load {summary['mk_pick']})\n"
+        f"  Todd pattern: {summary['todd_notes']} notes (todd.notes.json, Simpler Slice)\n"
+        f"See {out / 'README.txt'} for the one-drag Ableton setup."
+    )
+
+
+def _parse_root(root: str) -> int:
+    from .vocalchop import NOTE_NAMES
+
+    root = root.strip()
+    if root.isdigit():
+        return int(root)
+    name = root[:-1].upper() if root[-1].isdigit() else root.upper()
+    octave = int(root[-1]) if root[-1].isdigit() else 3
+    if name not in NOTE_NAMES:
+        print(f"error: bad --root '{root}' (use a MIDI number or note like 'C', 'F#3')", file=sys.stderr)
+        sys.exit(2)
+    # Ableton convention: C3 = MIDI 60. Bare "C" defaults to C3 = 60.
+    return NOTE_NAMES.index(name) + 12 * (octave + 2)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(prog="stemcell")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -126,6 +169,17 @@ def main() -> None:
     p_self = sub.add_parser("selftest", help="Offline synthetic self-check (no models, no copyrighted audio)")
     p_self.add_argument("--out", default=None, help="Output dir (default: ~/.stemcell/selftest)")
     p_self.set_defaults(func=cmd_selftest)
+
+    p_chop = sub.add_parser("chop", help="Chop a vocal + generate MK/Todd chop patterns (MIDI) for Ableton")
+    p_chop.add_argument("audio", help="Path to the vocal audio file")
+    p_chop.add_argument("--out", required=True, help="Output directory for the chop kit")
+    p_chop.add_argument("--tempo", type=float, required=True, help="Track tempo in BPM")
+    p_chop.add_argument("--root", default="C", help="Root note: MIDI number or name like 'C', 'F#3' (default C=C3)")
+    p_chop.add_argument("--scale", default="minor", choices=["minor", "major"], help="Scale (default minor)")
+    p_chop.add_argument("--bars", type=int, default=4, help="Pattern length in bars (default 4)")
+    p_chop.add_argument("--progression", default="i-VII-VI-VII",
+                        help="Chord progression for MK mode (default i-VII-VI-VII)")
+    p_chop.set_defaults(func=cmd_chop)
 
     args = parser.parse_args()
     args.func(args)
