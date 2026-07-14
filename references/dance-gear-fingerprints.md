@@ -1,6 +1,6 @@
 # Dance-Music Gear Fingerprints
 
-*A fingerprint reference for identifying the drum-machine and synth-preset sources behind dance-music tracks from measured audio evidence. Built for the `/dissect` workflow, where song-dissect extracts per-hit slices and computes spectral features + CLAP zero-shot character hints.*
+*A fingerprint reference for identifying the drum-machine and synth-preset sources behind dance-music tracks from measured audio evidence. Built for the `/dissect` workflow, where stemcell extracts per-hit slices and computes spectral features + CLAP zero-shot character hints.*
 
 Last compiled: 2026-07-13.
 
@@ -26,7 +26,7 @@ Two failure modes to guard against: (a) taking CLAP labels literally; (b) attrib
 
 ## How to identify a drum machine from measured evidence
 
-song-dissect gives you, per hit: `centroid_hz`, `lowband_ratio` (share of energy <120 Hz), `flatness` (spectral flatness), `decay_ms`/duration, and CLAP hints. Map them like this:
+stemcell gives you, per hit: `centroid_hz`, `lowband_ratio` (share of energy <120 Hz), `flatness` (spectral flatness), `decay_ms`/duration, and CLAP hints. Map them like this:
 
 ### Kick decision guide
 

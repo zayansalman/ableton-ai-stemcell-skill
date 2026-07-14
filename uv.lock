@@ -691,33 +691,6 @@ wheels = [
 ]
 
 [[package]]
-name = "song-dissect"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "basic-pitch", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
-    { name = "demucs", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
-    { name = "librosa", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
-    { name = "setuptools", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
-    { name = "soundfile", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
-    { name = "torch", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
-    { name = "torchaudio", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
-    { name = "transformers", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "basic-pitch", specifier = "==0.4.0" },
-    { name = "demucs", specifier = "==4.1.0" },
-    { name = "librosa", specifier = ">=0.10" },
-    { name = "setuptools", specifier = "<81" },
-    { name = "soundfile", specifier = ">=0.14.0" },
-    { name = "torch", specifier = ">=2.4" },
-    { name = "torchaudio", specifier = ">=2.4" },
-    { name = "transformers", specifier = ">=4.40" },
-]
-
-[[package]]
 name = "soundfile"
 version = "0.14.0"
 source = { registry = "https://pypi.org/simple" }
@@ -752,6 +725,33 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/b7/94/0957f866030d6071bcfd285977ff3652bacf85e663a634d3172cf47055a7/sphn-0.2.1.tar.gz", hash = "sha256:3b19b1fece67d979d84080458bed545d1f55ddc5abac6ca5deae2672a184c7fe", size = 33477, upload-time = "2026-01-07T12:00:32.277Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/6c/4c/cda94a813ef7f41bdb241577b7b51e453b59b8b20b184f6bd73ee2f3bdb8/sphn-0.2.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:a2238bcb66c21322ddc4a9308d7fbd4903175951ee4357cad8056c5e371e447f", size = 1755729, upload-time = "2026-01-07T12:00:26.067Z" },
+]
+
+[[package]]
+name = "stemcell"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "basic-pitch", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
+    { name = "demucs", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
+    { name = "librosa", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
+    { name = "setuptools", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
+    { name = "soundfile", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
+    { name = "torch", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
+    { name = "torchaudio", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
+    { name = "transformers", marker = "platform_machine == 'arm64' and sys_platform == 'darwin'" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "basic-pitch", specifier = "==0.4.0" },
+    { name = "demucs", specifier = "==4.1.0" },
+    { name = "librosa", specifier = ">=0.10" },
+    { name = "setuptools", specifier = "<81" },
+    { name = "soundfile", specifier = ">=0.14.0" },
+    { name = "torch", specifier = ">=2.4" },
+    { name = "torchaudio", specifier = ">=2.4" },
+    { name = "transformers", specifier = ">=4.40" },
 ]
 
 [[package]]

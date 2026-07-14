@@ -109,7 +109,7 @@ def _build_report_md(report: dict) -> str:
     source = report["source"]
 
     lines: list[str] = []
-    lines.append("# song-dissect report")
+    lines.append("# stemcell report")
     lines.append("")
     lines.append(
         f"**Tempo:** {_fmt(tempo['bpm'])} BPM (confidence {_fmt(tempo['confidence'])})  "

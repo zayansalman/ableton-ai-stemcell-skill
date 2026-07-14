@@ -1,4 +1,4 @@
-"""song-dissect CLI: dissect a song into stems, tempo/key, drum one-shots, and MIDI.
+"""stemcell CLI: dissect a song into stems, tempo/key, drum one-shots, and MIDI.
 
 Subcommands:
   run <audio> --out <dir>   run the full pipeline (or a --stages subset)
@@ -20,7 +20,7 @@ STAGE_ORDER = ["ingest", "separate", "analyze", "drums", "transcribe", "report"]
 
 
 def _stage_module(name: str):
-    return importlib.import_module(f"song_dissect.{name}")
+    return importlib.import_module(f"stemcell.{name}")
 
 
 def run_pipeline(ctx: Ctx, stages: list[str]) -> None:
@@ -98,14 +98,14 @@ def cmd_selftest(args: argparse.Namespace) -> None:
     outdir = (
         Path(args.out).expanduser().resolve()
         if args.out
-        else Path.home() / ".song-dissect" / "selftest"
+        else Path.home() / ".stemcell" / "selftest"
     )
     ok = run_selftest(outdir)
     sys.exit(0 if ok else 1)
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(prog="song-dissect")
+    parser = argparse.ArgumentParser(prog="stemcell")
     sub = parser.add_subparsers(dest="command", required=True)
 
     p_run = sub.add_parser("run", help="Dissect an audio file")
@@ -124,7 +124,7 @@ def main() -> None:
     p_boot.set_defaults(func=cmd_bootstrap)
 
     p_self = sub.add_parser("selftest", help="Offline synthetic self-check (no models, no copyrighted audio)")
-    p_self.add_argument("--out", default=None, help="Output dir (default: ~/.song-dissect/selftest)")
+    p_self.add_argument("--out", default=None, help="Output dir (default: ~/.stemcell/selftest)")
     p_self.set_defaults(func=cmd_selftest)
 
     args = parser.parse_args()

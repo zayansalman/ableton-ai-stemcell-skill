@@ -95,8 +95,8 @@ def run_selftest(outdir: Path) -> bool:
     _write_stereo(ctx.stem_path("other"), np.zeros_like(mix))
     _write_stereo(ctx.stem_path("vocals"), np.zeros_like(mix))
 
-    analyze = importlib.import_module("song_dissect.analyze")
-    drums_mod = importlib.import_module("song_dissect.drums")
+    analyze = importlib.import_module("stemcell.analyze")
+    drums_mod = importlib.import_module("stemcell.drums")
 
     analyze.run(ctx)
     drums_mod.run(ctx)

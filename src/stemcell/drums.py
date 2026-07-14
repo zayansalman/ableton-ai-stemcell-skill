@@ -125,7 +125,7 @@ def _classify_exemplar(y: np.ndarray, sr: int, ctx: Ctx) -> tuple[str, float, li
             local_files_only=True,
         )
     except Exception as e:
-        raise RuntimeError("CLAP model not cached -- run: song-dissect bootstrap") from e
+        raise RuntimeError("CLAP model not cached -- run: stemcell bootstrap") from e
 
     y_48k = librosa.resample(y.astype(np.float32), orig_sr=sr, target_sr=CLAP_SAMPLE_RATE)
 

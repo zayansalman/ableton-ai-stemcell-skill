@@ -1,5 +1,5 @@
 [project]
-name = "song-dissect"
+name = "stemcell"
 version = "0.1.0"
 description = "Local audio dissection pipeline: stems, tempo/key, drum one-shots, MIDI transcription"
 readme = "README.md"
@@ -19,7 +19,7 @@ dependencies = [
 ]
 
 [project.scripts]
-song-dissect = "song_dissect.cli:main"
+stemcell = "stemcell.cli:main"
 
 [build-system]
 requires = ["uv_build>=0.10.8,<0.11.0"]
