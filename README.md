@@ -1,5 +1,6 @@
 # Ableton-AI-Stemcell-Skill 🧬
 
+[![Tests](https://github.com/zayansalman/ableton-ai-stemcell-skill/actions/workflows/tests.yml/badge.svg)](https://github.com/zayansalman/ableton-ai-stemcell-skill/actions/workflows/tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org)
 [![Platform: macOS Apple Silicon](https://img.shields.io/badge/platform-macOS%20Apple%20Silicon-lightgrey.svg)](#requirements)
@@ -14,7 +15,7 @@ It runs **entirely locally** (built and tested on Apple Silicon, M2 / 8 GB). No 
 
 ---
 
-**Contents:** [What it does](#what-it-does) · [Example](#what-a-dissection-looks-like) · [Architecture](#architecture) · [Requirements](#requirements) · [Install](#install) · [Quickstart](#quickstart) · [Output](#output-contract) · [Claude Code](#use-with-claude-code) · [Limitations](#honest-limitations) · [Credits](#credits--licenses)
+**Contents:** [What it does](#what-it-does) · [Example](#what-a-dissection-looks-like) · [Architecture](#architecture) · [Requirements](#requirements) · [Install](#install) · [Quickstart](#quickstart) · [Output](#output-contract) · [Claude Code](#use-with-claude-code) · [Studio tools](#studio-tools-arrangement-side) · [Limitations](#honest-limitations) · [Contributing](#contributing) · [Credits](#credits--licenses)
 
 ## What it does
 
@@ -125,6 +126,17 @@ Stages cache by file-existence — re-running skips completed stages (`--force` 
 
 Stemcell is designed to be driven by an AI agent. The bundled `/dissect` skill ([`integrations/claude-skill/`](integrations/claude-skill/)) teaches [Claude Code](https://claude.com/claude-code) to run the pipeline, read `report.json`, identify gear, build Splice queries, generate chops, and rebuild in Ableton — end to end from a prompt like *"dissect this track"* or *"find sounds like this song"*.
 
+## Studio tools (arrangement side)
+
+Once the stems are in Live, [`studio/`](studio/) has tools for the arranging work Live's API can't reach:
+
+- **Split drums further:** kick / snare / hats from a drum loop, open vs closed hats from a hat stem. Every split sums back to the original exactly.
+- **Edit saved `.als` sets directly:** copy tracks between sets, extend looped clips, lay Session clips onto the Arrangement, carry lane automation onto cut-up stems, and list or copy MIDI controller mappings.
+- **Stem sync:** rebuild every stem under a cut-up resample, keeping each part in place.
+- **Claude Code skills** for these workflows, plus example per-instrument notes to adapt to your own setup.
+
+Some tools need extras that aren't in this repo (an external DrumSep wrapper, or an ableton-mcp build with the stem-sync module). [`studio/README.md`](studio/README.md) lists what each one needs.
+
 ## Honest limitations
 
 - Constant-tempo and 4/4 are assumed; `report.tempo.tempo_stability` is the honesty signal for rubato.
@@ -139,8 +151,15 @@ Stemcell is designed to be driven by an AI agent. The bundled `/dissect` skill (
 - [`docs/output-schema.md`](docs/output-schema.md) — the full `report.json` schema and the `notes.json` note format
 - [`docs/ableton-integration.md`](docs/ableton-integration.md) — the connector, its limits, and the one-drag chop setup
 - [`docs/melody-methodology.md`](docs/melody-methodology.md) — the grounded hook-writing method
+- [`studio/README.md`](studio/README.md) — arrangement-side tools and skills, and what each one needs
 - [`references/dance-gear-fingerprints.md`](references/dance-gear-fingerprints.md) — identify drum machines & synth presets from measured evidence
 - [`references/house-vocal-chop-craft.md`](references/house-vocal-chop-craft.md) — MK / Todd Edwards technique, scales, swing, generator rules
+
+## Contributing
+
+Issues and PRs are welcome. [`CONTRIBUTING.md`](CONTRIBUTING.md) covers setup, tests and ground rules. Please follow the [Code of Conduct](CODE_OF_CONDUCT.md). To report a security problem privately, see [`SECURITY.md`](SECURITY.md).
+
+**Contributors:** [Zayan Salman](https://github.com/zayansalman) (author) · [Shadwaan](https://github.com/Shadwaan) (studio tools and skills)
 
 ## Credits & Licenses
 
@@ -154,5 +173,3 @@ Stemcell is **MIT-licensed** (see [`LICENSE`](LICENSE)). It stands on excellent 
 | [librosa](https://librosa.org) | tempo / key / onsets | ISC |
 | [transformers](https://github.com/huggingface/transformers), [PyTorch](https://pytorch.org) | model runtime | Apache-2.0 |
 | [ableton-mcp](https://github.com/ahujasid/ableton-mcp) (optional) | Live control | MIT |
-
-Contributions welcome — see [`CONTRIBUTING.md`](CONTRIBUTING.md).

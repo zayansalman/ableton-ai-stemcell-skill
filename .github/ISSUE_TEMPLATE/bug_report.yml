@@ -1,0 +1,40 @@
+name: Bug report
+description: Something broke or gave a wrong result
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you expected, and what you got instead.
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command you ran
+      render: shell
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Traceback or report.md
+      description: Paste the error, or the relevant part of report.md.
+      render: text
+  - type: input
+    id: system
+    attributes:
+      label: System
+      placeholder: "macOS 15.x, M2, 8 GB"
+    validations:
+      required: true
+  - type: textarea
+    id: versions
+    attributes:
+      label: Model versions
+      description: "Output of: uv pip list | grep -E 'demucs|basic-pitch|transformers|torch'"
+      render: text
+  - type: markdown
+    attributes:
+      value: Please don't attach copyrighted audio. A short description of the track (genre, tempo, length) is enough.

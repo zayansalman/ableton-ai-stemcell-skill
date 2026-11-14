@@ -7,6 +7,16 @@ authors = [
     { name = "Zayan", email = "zayan_k@icloud.com" }
 ]
 requires-python = ">=3.11,<3.12"
+license = "MIT"
+license-files = ["LICENSE", "NOTICE"]
+keywords = ["ableton", "stem-separation", "music-production", "midi", "demucs", "mcp", "claude"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Multimedia :: Sound/Audio :: Analysis",
+]
 dependencies = [
     "basic-pitch==0.4.0",
     "demucs==4.1.0",
@@ -17,6 +27,10 @@ dependencies = [
     "torchaudio>=2.4",
     "transformers>=4.40",
 ]
+
+[project.urls]
+Homepage = "https://github.com/zayansalman/ableton-ai-stemcell-skill"
+Issues = "https://github.com/zayansalman/ableton-ai-stemcell-skill/issues"
 
 [project.scripts]
 stemcell = "stemcell.cli:main"

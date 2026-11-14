@@ -26,4 +26,4 @@ When the user types `/dissect`, invoke the Skill tool with `skill: "dissect"` be
 
 ## Paths
 
-`SKILL.md` references the repo at `~/projects/Ableton-AI-Stemcell-Skill` and runs `uv run stemcell`. If you cloned elsewhere, adjust those paths (or put `stemcell` on your `PATH`). The skill body documents the full workflow, the honest limitations, and the gear-ID and vocal-chop flows.
+`SKILL.md` runs `uv run stemcell` from `$STEMCELL_REPO` (default `~/projects/ableton-ai-stemcell-skill`). If you cloned elsewhere, set `STEMCELL_REPO` to your clone, e.g. `export STEMCELL_REPO=~/code/ableton-ai-stemcell-skill` in your shell profile. The skill body documents the full workflow, the honest limitations, and the gear-ID and vocal-chop flows.
