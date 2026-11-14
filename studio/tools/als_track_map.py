@@ -2,7 +2,6 @@
 mappings, their names and groups, their routing, and every mapping (channel, CC/note).
 
     python3 als_track_map.py "House Home.als" > house-home-mappings.md
-    python3 als_track_map.py SET.als --check-live      # also compare with the open Live set
 
 Read from the saved .als (Live's API cannot see mappings). Routing is resolved through
 each route's target track id, because the display text stores stale auto-numbers
@@ -50,7 +49,6 @@ def route_text(dc: ET.Element, tag: str, names: dict[str, str]) -> str:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("als")
-    ap.add_argument("--check-live", action="store_true")
     a = ap.parse_args()
 
     root = ET.fromstring(gzip.open(a.als).read())
@@ -85,7 +83,6 @@ def main() -> None:
             dc = t.find("DeviceChain")
             mon = t.find("DeviceChain/MainSequencer/MonitoringEnum")
             kinds = TYPES.get(kind, kind)
-            devs = [d.get("Id") for d in []]
             out.append(f"- **Type:** {kinds}")
             if kind in ("AudioTrack",):
                 out.append(f"- **Audio in:** {route_text(dc, 'AudioInputRouting', names)}")

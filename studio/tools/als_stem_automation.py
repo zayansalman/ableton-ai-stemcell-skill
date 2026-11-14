@@ -14,7 +14,8 @@ the window shifted to the piece's position, and a point at `end` holding the val
 points at the same time make a step, as Live does itself). Everything else in that envelope is dropped, so
 nothing plays outside the pieces. Tracks are matched by name ignoring Live's "NN-" prefix.
 
-Assumes the stems and the resample all began at beat 0 (so a piece's start marker is its original position).
+Assumes the cut-up set was made from the pre-cut set (Save As), so automation targets keep the same ids in both,
+and that the stems and the resample all began at beat 0 (so a piece's start marker is its original position).
 Interpolation is linear between points; curve shapes inside a window are not preserved.
 """
 from __future__ import annotations
@@ -114,7 +115,7 @@ def set_envelopes(block, new_envs):
     i = block.find("<AutomationEnvelopes>")
     j = block.find("</AutomationEnvelopes>", i)
     seg = block[i:j]
-    indent = re.search(r"\n(\t*)<AutomationEnvelopes>", block[:i + 30]).group(1) if False else "\t\t\t\t"
+    indent = "\t\t\t\t"
     existing = {re.search(r'<PointeeId Value="(\d+)"', m.group(2)).group(1): m for m in ENV.finditer(seg)}
     next_id = 1 + max([int(m.group(1)) for m in existing.values()] + [-1])
     for pid, (kind, events) in new_envs.items():

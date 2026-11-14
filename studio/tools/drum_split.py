@@ -14,15 +14,30 @@ DrumSep (MDX23C, vendored in the Prolink Sync repo as device/drumsplit.py) separ
 
 Writes "<loop name> - <group>.wav" (24-bit, same sample rate and length as the loop, so a warped clip lines up exactly) and prints one
 JSON line: {"mode": ..., "files": {group: path}, "rms": {...}, "sum_error": float}.
-Needs the Prolink Grab venv ("~/Library/Application Support/Prolink Grab/venv": torch, soundfile) and the DrumSep checkpoint that
-tools/setup_stems.sh in the Prolink Sync repo downloads. Input must be 44.1 kHz (DrumSep's rate).
+Requirements (not shipped in this repo):
+  * a `drumsplit.py` module exposing INSTRUMENTS, load_model, demix and split_kick (an MDX23C DrumSep wrapper,
+    from the Prolink Sync project). Set PROLINK_DEVICE_DIR to the folder that holds it.
+  * the DrumSep checkpoint MDX23C-DrumSep-aufr33-jarredou.ckpt. Set DRUMSEP_CKPT to its path.
+  * numpy, soundfile and torch (the main Stemcell environment has all three).
+Input must be 44.1 kHz (DrumSep's rate).
 """
 import argparse, json, os, sys
 
-REPO_DEVICE = os.environ.get("PROLINK_DEVICE_DIR", os.path.expanduser("~/Documents/Claude/Ableton CUE/device"))
+REPO_DEVICE = os.environ.get("PROLINK_DEVICE_DIR", "")
 CKPT = os.environ.get("DRUMSEP_CKPT", os.path.expanduser(
     "~/Library/Application Support/Prolink Grab/drumsep/MDX23C-DrumSep-aufr33-jarredou.ckpt"))
 TOP_GROUPS = {"hats": ["hh", "ride", "crash", "kick", "toms"], "snare_clap": ["snare"]}
+
+
+def load_drumsplit():
+    """Import the external DrumSep wrapper, with a clear message when it or the checkpoint is missing."""
+    if not REPO_DEVICE or not os.path.isfile(os.path.join(REPO_DEVICE, "drumsplit.py")):
+        sys.exit("drumsplit.py not found: set PROLINK_DEVICE_DIR to the folder that contains it (see the docstring)")
+    if not os.path.isfile(CKPT):
+        sys.exit(f"DrumSep checkpoint not found at {CKPT}: set DRUMSEP_CKPT")
+    sys.path.insert(0, REPO_DEVICE)
+    import drumsplit
+    return drumsplit
 
 
 def parse_groups(specs):
@@ -230,9 +245,8 @@ def main():
     ap.add_argument("--tail", type=float, default=150, help="kit mode: ms the snare is kept after a hit (shorter than the gap to the next hat)")
     ap.add_argument("--group", action="append", help="NAME=inst,inst  (instruments: kick snare toms hh ride crash); repeat per output")
     a = ap.parse_args()
-    sys.path.insert(0, REPO_DEVICE)
     import numpy as np, soundfile as sf, torch
-    import drumsplit as ds
+    ds = load_drumsplit()
 
     if a.mode == "kit" and not a.group:
         return kit_mode(a, ds)

@@ -24,11 +24,15 @@ from als_copy_tracks import track_blocks  # noqa: E402
 BEATS_PER_BAR = 4
 
 
-def session_clip(block: str, slot: int) -> str:
+def session_clip(block: str, slot: int) -> tuple[str, str]:
+    """(clip XML, "AudioClip" | "MidiClip") for the Session clip in `slot` of this track block."""
     m = re.search(r'<ClipSlot Id="%d">' % slot, block)
     if not m:
         sys.exit(f"no slot {slot}")
     c = re.compile(r"<(AudioClip|MidiClip) Id=\"\d+\"[^>]*>").search(block, m.end())
+    nxt = block.find("<ClipSlot Id=", m.end())
+    if not c or (nxt != -1 and c.start() > nxt):
+        sys.exit(f"slot {slot} is empty")
     close = f"</{c.group(1)}>"
     end = block.index(close, c.end()) + len(close)
     return block[c.start():end], c.group(1)
@@ -53,7 +57,6 @@ def main() -> None:
         seen.add(t["name"])
         cfg = plan[t["name"]]
         clip, tag = session_clip(t["block"], cfg["slot"])
-        loop = re.search(r"<LoopEnd Value=\"([^\"]+)\"", clip)
         if re.search(r'<LoopOn Value="false"', clip):
             sys.exit(f"{t['name']}: session clip has loop off")
         ev = re.search(r"<ArrangerAutomation>\s*<Events\s*/?>", t["block"])

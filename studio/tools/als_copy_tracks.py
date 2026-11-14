@@ -129,8 +129,8 @@ def main() -> None:
         b = re.sub(r'^(\t*<%s) Id="\d+"' % t["tag"], rf'\1 Id="{next_track_id}"', b, count=1)
         b = re.sub(r'<LomId Value="\d+" />', '<LomId Value="0" />', b, count=1)
         b = re.sub(r'<TrackGroupId Value="-?\d+"', f'<TrackGroupId Value="{group["id"]}"', b, count=1)
-        print(f"{name}: track id {t['id']} -> {next_track_id}, {len(remap)} pointee ids remapped, "
-              f"routes {sorted(set(re.findall(r'(?:AudioIn|MidiIn)/Track[^\"]*', b)))}")
+        routes = sorted(set(re.findall(r'(?:AudioIn|MidiIn)/Track[^"]*', b)))
+        print(f"{name}: track id {t['id']} -> {next_track_id}, {len(remap)} pointee ids remapped, routes {routes}")
         next_track_id += 1
         new_blocks.append(b)
 

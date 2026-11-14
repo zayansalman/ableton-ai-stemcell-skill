@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """hat_split: split a hat stem into OPEN and CLOSED hats by how long each hit rings.
 
-    python hat_split.py "<hats.wav>" [--out-dir DIR] [--open-ms 60] [--table]
+    python hat_split.py "<hats.wav>" [--out-dir DIR] [--open-ms 60]
 
 DrumSep gives one `hh` part, so open and closed hats arrive together. Every hat hit is found from the amplitude envelope
 (a hit = a sharp rise above 8% of the loudest peak, 60 ms apart at least); its ring time is how long it takes to fall 20 dB
@@ -12,7 +12,7 @@ so OPEN + CLOSED equals the input (error ~1e-7), the same length and sample rate
 Writes "<name> - OPEN HATS.wav" and "<name> - CLOSED HATS.wav" next to the input (or in --out-dir) and prints one JSON line
 {"open": path, "closed": path, "hits": [{"time_s", "ring_ms", "peak", "part"}], "sum_error": float}.
 This is an energy-decay heuristic, not a model: check the hit list. A ghost note or a hat that is choked early reads as closed.
-Needs numpy and soundfile only (the Prolink Grab venv has both).
+Needs numpy and soundfile only (both are in the main Stemcell environment).
 """
 import argparse, json, os
 import numpy as np
