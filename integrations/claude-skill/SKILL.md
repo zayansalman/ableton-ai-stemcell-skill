@@ -8,7 +8,7 @@ trigger: /dissect
 
 Turn an audio file into its component parts (from the audio itself, not web lookups), then optionally source similar licensed sounds on Splice and rebuild the arrangement in Ableton Live.
 
-Backed by the local `stemcell` pipeline at `~/projects/Ableton-AI-Stemcell-Skill` (uv project, Python 3.11) plus two MCP connectors: **Splice** (`describe_a_sound`, `download_asset` — text search + credit-metered download) and **ableton-mcp** (`set_tempo`, `create_midi_track`, `add_notes_to_clip`, `create_audio_clip`, `load_instrument_or_effect`, `get_browser_tree`).
+Backed by the local `stemcell` pipeline at `$STEMCELL_REPO` (default `~/projects/ableton-ai-stemcell-skill`; uv project, Python 3.11) plus two MCP connectors: **Splice** (`describe_a_sound`, `download_asset` — text search + credit-metered download) and **ableton-mcp** (`set_tempo`, `create_midi_track`, `add_notes_to_clip`, `create_audio_clip`, `load_instrument_or_effect`, `get_browser_tree`).
 
 ## Usage
 
@@ -23,7 +23,7 @@ Backed by the local `stemcell` pipeline at `~/projects/Ableton-AI-Stemcell-Skill
 
 ### 1. Run the pipeline
 ```bash
-cd ~/projects/Ableton-AI-Stemcell-Skill && ~/.local/bin/uv run stemcell run "<path>" --out <outdir>
+cd "${STEMCELL_REPO:-$HOME/projects/ableton-ai-stemcell-skill}" && uv run stemcell run "<path>" --out <outdir>
 ```
 First run on a machine needs `stemcell bootstrap` once (~700 MB: htdemucs + CLAP). Demucs separation is the slow stage (~2 min/audio-minute on M2 CPU) — run it backgrounded with a Monitor watching for `Done. Report` / `error` / `Traceback`. Stages cache by file-existence; re-running skips completed stages.
 

@@ -21,6 +21,14 @@ Each pipeline stage is a module in `src/stemcell/` exposing a single `run(ctx: C
 
 Stages: `ingest → separate → analyze → drums → transcribe → report`. Standalone generators: `melody.py` (hooks), `vocalchop.py` (chops).
 
+`studio/` is separate: standalone arrangement-side scripts and Claude Code skills that don't import the pipeline. Each tool lists what it needs in [`studio/README.md`](studio/README.md). Tools that can run without Live or a model should have a smoke test in `tests/test_studio_tools.py`.
+
+## Pull requests
+
+- Branch from `main`, keep each PR to one change, and fill in the PR template.
+- CI runs `pytest` on macOS (Apple Silicon). It must pass before merge.
+- No personal paths, usernames or secrets in code or docs. Use environment variables (as `studio/` does with `STEMCELL_HOME`, `ABLETON_MCP_DIR` and so on).
+
 ## Ground rules
 
 - **No silent quality caps.** If you bound coverage (top-N, sampling, a cap like `MAX_TODD_SLICES`), surface it to the user.
